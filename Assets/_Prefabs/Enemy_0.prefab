@@ -117,10 +117,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f4d869d0cd0d2499ebbf34cebd23f3b8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  speed: 10
+  speed: 20
   fireRate: 0.3
-  health: 10
+  health: 2
   score: 100
+  powerUpDropChance: 1
 --- !u!114 &4413574950116602420
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -135,6 +136,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   showingColor: 0
   blinkCompleteTime: 0
+  ignoreOnCollisionEnter: 0
 --- !u!1001 &2771718673915856375
 PrefabInstance:
   m_ObjectHideFlags: 0
