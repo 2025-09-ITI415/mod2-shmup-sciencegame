@@ -161,6 +161,17 @@ public class Hero : MonoBehaviour
         }
     }
 
+    public void TakeDamage(float dmg)
+    {
+        shieldLevel -= dmg;
+        if (shieldLevel <= 0)
+        {
+            Destroy(gameObject);
+        }
+    }
+
+
+
     public void AbsorbPowerUp(PowerUp pUp)
     {
         Debug.Log("Absorbed PowerUp: " + pUp.type);                         // b
