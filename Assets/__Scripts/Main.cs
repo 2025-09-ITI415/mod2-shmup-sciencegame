@@ -22,6 +22,16 @@ public class Main : MonoBehaviour
                                      eWeaponType.blaster, eWeaponType.blaster,
                                      eWeaponType.spread,  eWeaponType.shield };
     private BoundsCheck bndCheck;
+    [Header("Level & Score Display")]
+    public int currentLevel = 1;
+    public int totalScore = 0;
+    public int levelScore = 0;
+    public int baseScoreToLevel = 500;
+    public float levelGrowth = 1.25f;
+
+    private int ScoreToNextLevel() {
+        return Mathf.RoundToInt(baseScoreToLevel * Mathf.Pow(levelGrowth, currentLevel - 1));
+    }
 
     void Awake()
     {
@@ -117,22 +127,45 @@ public class Main : MonoBehaviour
     /// <param name="e"The Enemy that was destroyed</param
     static public void SHIP_DESTROYED(Enemy e)
     {
-        // Potentially generate a PowerUp
-        if (Random.value <= e.powerUpDropChance)
-        { // Underlined red for now  // c
-          // Choose a PowerUp from the possibilities in powerUpFrequency
-            int ndx = Random.Range(0, S.powerUpFrequency.Length);           // d
-            eWeaponType pUpType = S.powerUpFrequency[ndx];
+        S.totalScore += e.score;
+        S.levelScore += e.score;
 
-            // Spawn a PowerUp
+        int need = S.ScoreToNextLevel();
+        while (S.levelScore >= need) {
+            S.levelScore -= need;
+            S.currentLevel++;
+            need = S.ScoreToNextLevel();
+        }
+
+        if (Random.value <= e.powerUpDropChance) {
+            int ndx = Random.Range(0, S.powerUpFrequency.Length);
+            eWeaponType pUpType = S.powerUpFrequency[ndx];
             GameObject go = Instantiate<GameObject>(S.prefabPowerUp);
             PowerUp pUp = go.GetComponent<PowerUp>();
-            // Set it to the proper WeaponType
-            pUp.SetType(pUpType);                                           // e
-
-            // Set it to the position of the destroyed ship
+            pUp.SetType(pUpType);
             pUp.transform.position = e.transform.position;
         }
     }
-
+    void OnGUI()
+    {
+        GUIStyle title = new GUIStyle(GUI.skin.label);
+        title.fontSize = 24;
+        title.normal.textColor = Color.white;
+        GUI.Label(new Rect(20, 20, 400, 30), $"Level: {currentLevel}", title);
+        GUI.Label(new Rect(20, 50, 400, 25), $"Total Score: {totalScore}");
+        int need = ScoreToNextLevel();
+        float pct = (need > 0) ? (float)levelScore / need : 0f;
+        pct = Mathf.Clamp01(pct);
+        int barLength = 25;
+        int filled = Mathf.RoundToInt(barLength * pct);
+        string bar = new string('|', filled).PadRight(barLength, ' ');
+        GUIStyle barStyle = new GUIStyle(GUI.skin.label);
+        barStyle.fontSize = 18;
+        barStyle.normal.textColor = Color.green;
+        GUI.Label(new Rect(20, 80, 600, 30), $"[{bar}] {Mathf.RoundToInt(pct * 100)}%", barStyle);
+        GUIStyle progressStyle = new GUIStyle(GUI.skin.label);
+        progressStyle.fontSize = 14;
+        progressStyle.normal.textColor = Color.white;
+        GUI.Label(new Rect(20, 105, 400, 25), $"XP: {levelScore}/{need}", progressStyle);
+    }
 }

@@ -6,14 +6,18 @@ using UnityEngine;
 public class Enemy : MonoBehaviour
 {
 
-
     [Header("Inscribed")]
     public float speed = 10f;   // The movement speed is 10m/s
     public float fireRate = 0.3f;  // Seconds/shot (Unused)
     public float health = 10;    // Damage needed to destroy this enemy
     public int score = 100;   // Points earned for destroying this
     public float powerUpDropChance = 1f;
-
+    public bool canShoot = false;
+    public float shootIntervalMin = 1.5f;
+    public float shootIntervalMax = 3f;
+    public float bulletSpeed = 25f;
+    public float bulletLifetime = 5f;
+    private float nextShotTime = 0f;
 
     // private BoundsCheck bndCheck;                                             // b
     protected BoundsCheck bndCheck;
@@ -47,6 +51,11 @@ public class Enemy : MonoBehaviour
             Destroy(gameObject);
 
 
+        }
+        if (canShoot && bndCheck.isOnScreen && Time.time >= nextShotTime)
+        {
+            FireBullet();
+            nextShotTime = Time.time + Random.Range(shootIntervalMin, shootIntervalMax);
         }
     }
 
@@ -89,5 +98,18 @@ public class Enemy : MonoBehaviour
             print("Enemy hit by non-ProjectileHero: " + otherGO.name);      // f
         }
     }
-
+    void FireBullet()
+    {
+        GameObject b = GameObject.CreatePrimitive(PrimitiveType.Sphere);
+        b.name = "EnemyBullet";
+        b.layer = LayerMask.NameToLayer("Default");
+        b.transform.position = pos;
+        var col = b.GetComponent<Collider>();
+        col.isTrigger = true;
+        var rb = b.AddComponent<Rigidbody>();
+        rb.useGravity = false;
+        rb.collisionDetectionMode = CollisionDetectionMode.ContinuousDynamic;
+        rb.linearVelocity = Vector3.down * bulletSpeed;
+        Destroy(b, bulletLifetime);
+    }
 }

@@ -186,6 +186,11 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 974008312187329754, guid: ae3a657191efe7040b52cc85f1d490eb, type: 3}
   m_PrefabInstance: {fileID: 757667557}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &302918991 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: ae3a657191efe7040b52cc85f1d490eb, type: 3}
+  m_PrefabInstance: {fileID: 757667557}
+  m_PrefabAsset: {fileID: 0}
 --- !u!4 &555482454 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -3293744620739765933, guid: ae3a657191efe7040b52cc85f1d490eb, type: 3}
@@ -422,13 +427,37 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: -3293744620739765933, guid: ae3a657191efe7040b52cc85f1d490eb, type: 3}
       insertIndex: -1
       addedObject: {fileID: 781726979}
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: ae3a657191efe7040b52cc85f1d490eb, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 757667559}
   m_SourcePrefab: {fileID: 100100000, guid: ae3a657191efe7040b52cc85f1d490eb, type: 3}
 --- !u!4 &757667558 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: ae3a657191efe7040b52cc85f1d490eb, type: 3}
   m_PrefabInstance: {fileID: 757667557}
   m_PrefabAsset: {fileID: 0}
+--- !u!135 &757667559
+SphereCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 302918991}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 1
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Radius: 0.5
+  m_Center: {x: 0, y: 0, z: 0}
 --- !u!1001 &781726978
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -772,6 +801,11 @@ MonoBehaviour:
     delayBetweenShots: 0
     velocity: 50
   powerUpFrequency: 01000000010000000200000006000000
+  currentLevel: 1
+  totalScore: 0
+  levelScore: 0
+  baseScoreToLevel: 500
+  levelGrowth: 1.25
 --- !u!114 &963194230
 MonoBehaviour:
   m_ObjectHideFlags: 0

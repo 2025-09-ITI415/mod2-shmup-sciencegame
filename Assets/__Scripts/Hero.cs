@@ -113,6 +113,13 @@ public class Hero : MonoBehaviour
         {
             AbsorbPowerUp(pUp);
         }
+        else if (other.gameObject.name.StartsWith("EnemyBullet"))
+        {
+            shieldLevel--;
+            Destroy(other.gameObject);
+            lastTriggerGo = null;
+            return;
+        }
         else
         {
             Debug.LogWarning("Shield trigger hit by non-Enemy: " + go.name);    // g

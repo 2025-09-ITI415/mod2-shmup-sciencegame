@@ -97,6 +97,12 @@ MonoBehaviour:
   fireRate: 0.3
   health: 10
   score: 100
+  powerUpDropChance: 1
+  canShoot: 1
+  shootIntervalMin: 1
+  shootIntervalMax: 2
+  bulletSpeed: 25
+  bulletLifetime: 5
   waveFrequency: 2
   waveWidth: 4
   waveRotY: 45
@@ -114,6 +120,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   showingColor: 0
   blinkCompleteTime: 0
+  ignoreOnCollisionEnter: 0
 --- !u!1001 &5065028546169738789
 PrefabInstance:
   m_ObjectHideFlags: 0
