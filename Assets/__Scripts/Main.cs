@@ -21,6 +21,8 @@ public class Main : MonoBehaviour
     public eWeaponType[] powerUpFrequency = new eWeaponType[] {        
                                      eWeaponType.blaster, eWeaponType.blaster,
                                      eWeaponType.spread,  eWeaponType.shield };
+    public enum GameState { Start, Playing, GameOver }
+    public GameState gameState = GameState.Start;
     private BoundsCheck bndCheck;
     [Header("Level & Score Display")]
     public int currentLevel = 1;
@@ -49,7 +51,7 @@ public class Main : MonoBehaviour
         {
             WEAP_DICT[def.type] = def;
         }
-
+        Time.timeScale = 0f;
     }
 
     public void SpawnEnemy()
@@ -83,6 +85,27 @@ public class Main : MonoBehaviour
         Invoke(nameof(SpawnEnemy), 1f / enemySpawnPerSecond);                // g
     }
 
+    void Update()
+    {
+        if (gameState == GameState.Start)
+        {
+            if (Input.GetKeyDown(KeyCode.Space) || Input.GetMouseButtonDown(0))
+            {
+                gameState = GameState.Playing;
+                Time.timeScale = 1f;
+            }
+            return;
+        }
+        if (gameState == GameState.GameOver)
+        {
+            if (Input.GetKeyDown(KeyCode.R) || Input.GetKeyDown(KeyCode.Space))
+            {
+                Scene scene = SceneManager.GetActiveScene();
+                SceneManager.LoadScene(scene.name);
+            }
+            return;
+        }
+    }
     void DelayedRestart()
     {                                                   // c
                                                         // Invoke the Restart() method in gameRestartDelay seconds
@@ -98,7 +121,8 @@ public class Main : MonoBehaviour
 
     static public void HERO_DIED()
     {
-        S.DelayedRestart();                                                  // b
+        S.gameState = GameState.GameOver;
+        Time.timeScale = 0f;
     }
 
     /// <summary>
@@ -148,6 +172,41 @@ public class Main : MonoBehaviour
     }
     void OnGUI()
     {
+        if (gameState == GameState.Start)
+        {
+            GUIStyle t = new GUIStyle(GUI.skin.label);
+            t.fontSize = 46;
+            t.normal.textColor = Color.white;
+            t.alignment = TextAnchor.MiddleCenter;
+            GUI.Label(new Rect(0, Screen.height * 0.1f, Screen.width, 80), "SPACE SHOOTER", t);
+
+            GUIStyle s = new GUIStyle(GUI.skin.label);
+            s.fontSize = 22;
+            s.normal.textColor = Color.gray;
+            s.alignment = TextAnchor.MiddleCenter;
+            GUI.Label(new Rect(0, Screen.height * 0.3f, Screen.width, 40), "Modified by Team: ScienceGame", s);
+
+            s.fontSize = 24;
+            s.normal.textColor = Color.green;
+            GUI.Label(new Rect(0, Screen.height * 0.8f, Screen.width, 40), "Press SPACE to Start", s);
+
+            return;
+        }
+        if (gameState == GameState.GameOver)
+        {
+            GUIStyle t = new GUIStyle(GUI.skin.label);
+            t.fontSize = 42;
+            t.normal.textColor = Color.white;
+            t.alignment = TextAnchor.MiddleCenter;
+            GUI.Label(new Rect(0, Screen.height * 0.3f, Screen.width, 80), "GAME OVER", t);
+
+            GUIStyle s = new GUIStyle(GUI.skin.label);
+            s.fontSize = 22;
+            s.normal.textColor = Color.green;
+            s.alignment = TextAnchor.MiddleCenter;
+            GUI.Label(new Rect(0, Screen.height * 0.45f, Screen.width, 40), "Press R or SPACE to Restart", s);
+            return;
+        }
         GUIStyle title = new GUIStyle(GUI.skin.label);
         title.fontSize = 24;
         title.normal.textColor = Color.white;
